@@ -13,37 +13,26 @@
 <body>
     <%- include('partials/navbar.ejs') %>
         <div class="grid">
-            
-        <!--
-            <% sounds[category].forEach(s=> { %>
-                <button class="sound-button" data-audio-path="<%= s.path %>">
-                    <%= s.name %>
-                </button>
-            <% }) %>
-        -->
+            <!-- Buttons will be generated here -->
         </div>
         <script async defer>
-            function toggleAudio(path) {
-                var audio = new Audio(path);
-                audio.addEventListener('error', function (e) {
-                    console.error('Failed to load audio file:', path);
-                });
-                audio.addEventListener('ended', function (e) {
-                    audio = null;
-                });
-                audio.play();
+            function toggleAudio(audioPath) {
+                const audio = new Audio(audioPath);
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
             }
             document.addEventListener('DOMContentLoaded', function () {
                 const __category = '<%= category %>';
 
-                // Set style with the category
                 document.getElementById('category').setAttribute('href', `/styles/${__category}.css`);
 
-                // Generate buttons in grid
                 fetch('http://localhost:3000/api?category=' + __category)
                     .then(res => res.json())
                     .then(sounds => {
-                        console.log(sounds[__category]);
                         sounds[__category].forEach(s => {
                             const button = document.createElement('button');
                             button.appendChild(document.createTextNode(s.name));
@@ -54,18 +43,17 @@
                     })
                     .catch(err => console.error('Error fetching sounds:', err));
 
-                // Add click event listeners to all sound buttons
                 var soundButtons = document.querySelectorAll('.sound-button');
                 soundButtons.forEach(function (button) {
                     button.addEventListener('click', function () {
                         var audioPath = this.dataset.audioPath;
-                        const loc = window.location
-                        console.log(`${loc.protocol}//${loc.host}${audioPath.replace(/\\/g, '/')}`);
-                        toggleAudio(`${loc.protocol}//${loc.host}${audioPath.replace(/\\/g, '/')}`);
+                        var audio = new Audio(audioPath);
+                        audio.play();
+                        console.log(audioPath);
                     });
                 });
             });
         </script>
-    </body>
+</body>
 
 </html>
