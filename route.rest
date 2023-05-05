@@ -1,0 +1,19 @@
+GET http://localhost:3000/api
+
+###
+
+GET http://localhost:3000/api?category=
+
+###
+
+GET http://localhost:3000/api?category=all
+
+###
+
+GET http://localhost:3000/api?category=skeppy
+
+###
+
+GET http://localhost:3000/api?category=skeppy,badboyhalo,skeppy
+
+###

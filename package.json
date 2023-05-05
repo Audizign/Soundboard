@@ -1,0 +1,20 @@
+{
+  "name": "soundboard",
+  "version": "1.0.0",
+  "description": "Soundboard for various creators",
+  "main": "server.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "author": "Audizign",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.5",
+    "play-sound": "^1.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

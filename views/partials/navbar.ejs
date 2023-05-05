@@ -1,0 +1,13 @@
+<nav>
+    <ul>
+        <% if (Array.isArray(categories)) { %>
+            <% categories.forEach(c=> { %>
+                <li><a href="/page/<%= c %>">
+                    <button class="<%= c %>">
+                        <%= c.toUpperCase() %>
+                    </button>
+                </a></li>
+            <% }); %>
+        <% } %>
+    </ul>
+</nav>
