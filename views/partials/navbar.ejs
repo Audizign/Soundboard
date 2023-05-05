@@ -2,7 +2,7 @@
     <ul>
         <% if (Array.isArray(categories)) { %>
             <% categories.forEach(c=> { %>
-                <li><a href="/page/<%= c %>">
+                <li><a href="/<%= c %>">
                     <button class="<%= c %>">
                         <%= c.toUpperCase() %>
                     </button>

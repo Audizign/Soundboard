@@ -6,6 +6,7 @@ const path = require('path');
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.resolve(__dirname, 'public')));
+app.use('/api/sounds', express.static(path.resolve(__dirname, 'public', 'sounds')));
 
 app.get('/api', async (req, res) => {
     try {
@@ -22,7 +23,7 @@ app.get('/api', async (req, res) => {
 
             const sounds = fs.readdirSync(path.join('public', 'sounds', category))
                 .map(sound => ({
-                    path: path.join('/public', 'sounds', category, sound),
+                    path: path.join('api', 'sounds', category),
                     file: sound,
                     name: sound.replace(/\.mp3/gi, '').replace(/[-_\s]+/g, ' ').trim().toUpperCase()
                 }));
@@ -37,7 +38,7 @@ app.get('/api', async (req, res) => {
     }
 });
 
-app.get('/page/:category', async (req, res) => {
+app.get('/:category', async (req, res) => {
     try {
         const responses = await Promise.all([
             fetch('http://localhost:3000/api'),

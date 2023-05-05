@@ -15,6 +15,7 @@
         <div class="grid">
             <!-- Buttons will be generated here -->
         </div>
+
         <script async defer>
             function toggleAudio(audioPath) {
                 const audio = new Audio(audioPath);
@@ -30,28 +31,29 @@
 
                 document.getElementById('category').setAttribute('href', `/styles/${__category}.css`);
 
-                fetch('http://localhost:3000/api?category=' + __category)
+                fetch(`http://localhost:3000/api?category=${__category}`)
                     .then(res => res.json())
                     .then(sounds => {
+                        const grid = document.querySelector('.grid');
                         sounds[__category].forEach(s => {
                             const button = document.createElement('button');
                             button.appendChild(document.createTextNode(s.name));
                             button.classList.add('sound-button');
-                            button.setAttribute('data-audio-path', s.path);
-                            document.querySelector('.grid').appendChild(button);
+
+                            const audio = new Audio(`${s.path}\\${s.file}`);
+                            button.addEventListener('click', function () {
+                                if (audio.paused) {
+                                    audio.play();
+                                } else {
+                                    audio.pause();
+                                    audio.currentTime = 0;
+                                }
+                            });
+
+                            grid.appendChild(button);
                         });
                     })
                     .catch(err => console.error('Error fetching sounds:', err));
-
-                var soundButtons = document.querySelectorAll('.sound-button');
-                soundButtons.forEach(function (button) {
-                    button.addEventListener('click', function () {
-                        var audioPath = this.dataset.audioPath;
-                        var audio = new Audio(audioPath);
-                        audio.play();
-                        console.log(audioPath);
-                    });
-                });
             });
         </script>
 </body>

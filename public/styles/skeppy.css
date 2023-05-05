@@ -1,6 +1,5 @@
 :root {
     background-color: hsl(180, 100%, 10%);
-    --sound-button-color: hsl(180, 70%, 40%);
-    --sound-button-active: hsl(180, 50%, 80%);
-    --sound-button-text: hsl(0, 0%, 10%);
+    --base-color: hsl(180, 70%, 40%);
+    --text-color: hsl(0, 0%, 10%);
 }
