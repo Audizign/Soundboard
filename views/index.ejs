@@ -15,17 +15,7 @@
         <div class="grid">
             <!-- Buttons will be generated here -->
         </div>
-
         <script async defer>
-            function toggleAudio(audioPath) {
-                const audio = new Audio(audioPath);
-                if (audio.paused) {
-                    audio.play();
-                } else {
-                    audio.pause();
-                    audio.currentTime = 0;
-                }
-            }
             document.addEventListener('DOMContentLoaded', function () {
                 const __category = '<%= category %>';
 
@@ -42,6 +32,8 @@
 
                             const audio = new Audio(`${s.path}\\${s.file}`);
                             button.addEventListener('click', function () {
+                                //const audio = new Audio(`${s.path}\\${s.file}`);
+                                //audio.play();
                                 if (audio.paused) {
                                     audio.play();
                                 } else {

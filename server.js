@@ -2,8 +2,13 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
+//const adSense = require('./adsense');
 
 app.set('view engine', 'ejs');
+
+/* app.get('/', (req, res) => {
+  res.render('index', { adSense: adSense.adHtml });
+}); */
 
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use('/api/sounds', express.static(path.resolve(__dirname, 'public', 'sounds')));
@@ -25,7 +30,7 @@ app.get('/api', async (req, res) => {
                 .map(sound => ({
                     path: path.join('api', 'sounds', category),
                     file: sound,
-                    name: sound.replace(/\.mp3/gi, '').replace(/[-_\s]+/g, ' ').trim().toUpperCase()
+                    name: sound.replace(/\.mp3/gi, '').replace(/[_\s]+/g, ' ').trim().toUpperCase()
                 }));
 
             data[category] = sounds;
