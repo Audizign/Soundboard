@@ -44,19 +44,13 @@ app.get('/api', async (req, res) => {
 });
 
 app.get('/:category', async (req, res) => {
-    try {
-        const responses = await Promise.all([
-            fetch('http://localhost:3000/api'),
-            fetch('http://localhost:3000/api?category=all')
-        ]);
-
-        const [sounds, categories] = await Promise.all(responses.map(res => res.json()));
-        const category = req.query.category || req.params.category;
-        res.render('index', { sounds, categories, category });
-    } catch (err) {
-        console.log(err);
-        res.status(500).send({ error: 'Internal server error' });
+    const categories = await Promise.resolve(fetch('http://localhost:3000/api?category=all')).then(res => res.json());
+    const category = req.query.category || req.params.category;
+    if (categories.includes(category)) {
+        res.render('index', { categories, category });
+        return;
     }
+    res.status(404).render('404', { category });
 });
 
 app.listen(3000, () => console.log('Server running on port 3000'));
