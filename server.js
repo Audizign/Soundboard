@@ -10,6 +10,16 @@ app.set('view engine', 'ejs');
   res.render('index', { adSense: adSense.adHtml });
 }); */
 
+function parseSoundName(str) {
+    str = str.replace(/\.mp3/gi, '').replace(/[_\s]+/g, ' ').trim().toUpperCase();
+    const matcher = str.match(/%[A-Fa-f0-9]{2}/gi);
+    if (!matcher) return str;
+    matcher.forEach(n => {
+        str = str.replace(n, String.fromCharCode(parseInt(n.slice(1), 16)));
+    });
+    return str;
+}
+
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use('/api/sounds', express.static(path.resolve(__dirname, 'public', 'sounds')));
 
@@ -29,8 +39,8 @@ app.get('/api', async (req, res) => {
             const sounds = fs.readdirSync(path.join('public', 'sounds', category))
                 .map(sound => ({
                     path: path.join('api', 'sounds', category),
-                    file: sound,
-                    name: sound.replace(/\.mp3/gi, '').replace(/[_\s]+/g, ' ').trim().toUpperCase()
+                    file: sound.replace('%', '%25'),
+                    name: parseSoundName(sound)
                 }));
 
             data[category] = sounds;

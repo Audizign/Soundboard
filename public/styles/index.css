@@ -1,9 +1,8 @@
 :root * {
-    text-decoration: none;
-    text-align: center;
-    font-size: 16px;
+    margin: 0;
     font-weight: 1000;
     font-family: Tahoma;
+    letter-spacing: 0.5px;
 }
 
 a {
@@ -12,10 +11,19 @@ a {
 
 body {
     background-color: var(--background-color);
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
     height: 100vh;
+    width: 100vw;
     overflow-x: hidden;
+    font-size: 24px;
+    text-decoration: none;
+    text-align: center;
+}
+
+main {
+    position:relative;
+    left: 20vw;
+    width: 80vw;
+    max-width: 1200px;
 }
 
 ul {
@@ -23,13 +31,15 @@ ul {
 }
 
 nav {
-    margin: 0;
     position: fixed;
-    border-right: 2px solid var(--base-color);
     left: 0;
     top: 0;
+    z-index: 1000;
     height: 100vh;
-    width: 15vw;
+    width: 20vw;
+    min-width: 10rem;
+    border-right: 2px solid var(--base-color);
+    background-color: var(--background-color);
 }
 
 nav li {
@@ -42,6 +52,14 @@ nav li {
     overflow: hidden;
 }
 
+button {
+    font-size: 14px;
+}
+
+button:hover {
+    filter: brightness(1.4);
+}
+
 nav button {
     background-color: var(--nav-color);
     border-radius: 1px;
@@ -50,15 +68,33 @@ nav button {
     width: 100%;
 }
 
+#nav-mini {
+    display: none;
+    justify-content: flex-end;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 900;
+    height: 3em;
+    width: 100vw;
+    background-color: var(--background-color);
+    border-bottom: 2px solid var(--base-color);
+}
+
+.hamburger img {
+    height: 3em;
+    width: 3em;
+}
+
 .small {
     margin: 1em;
 }
 
-.grid {
+#grid {
     padding: 0 2em;
-    top: 1.5em;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .sound-button {
@@ -68,26 +104,59 @@ nav button {
     border-width: 4px;
     color: var(--text-color);
     margin: 0.5em;
-    /* margin: 4px 2px; */
     cursor: pointer;
-    height: 5em;
-    width: 12em;
+    height: 5rem;
+    width: 12rem;
     transition: filter 0.25s ease;
 }
 
-button:hover {
-    filter: brightness(1.4);
-}
 
-.download-menu {
+#context-menu {
     position: fixed;
     display: none;
     z-index: 1000;
     width: max-content;
     height: max-content;
-    padding: 1em;
-    background-color: var(--background-color);
-    border: 2px solid var(--base-color);
+    font-size: 12px;
+}
+
+.menu-option {
+    background-color: var(--base-color);
+    text-align: left;
+    padding: 2px;
+    border: var(--background-color) 2px solid;
+    cursor: pointer;
+}
+
+.menu-option:hover {
+    filter: brightness(1.4);
+}
+
+@media (width < 80em) {
+    #grid {
+        padding: 1em;
+    }
+    button {
+        font-size: 10px;
+    }
+    .sound-button {
+        height: 3.75rem;
+        width: 9rem;
+    }
+}
+
+@media (width < 40em) {
+    nav {
+        display: none;
+    }
+    #nav-mini {
+        display: flex;
+    }
+    main {
+        top: 4em;
+        left: 0;
+        width: 100vw;
+    }
 }
 
 .badboyhalo {
@@ -139,9 +208,11 @@ button:hover {
 }
 
 .skeppy {
-    background-color: hsl(180, 70%, 40%);
+    --base-color: hsl(180, 50%, 60%);
+    --text-color: hsl(0, 0%, 0%);
+    --background-color: hsl(180, 70%, 40%);
+    --nav-color: hsl(180, 70%, 40%);
     border-color: hsl(180, 50%, 80%);
-    color: hsl(0, 0%, 0%);
 }
 
 .technoblade {

@@ -6,96 +6,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/styles/index.css">
-    <link id="category" rel="stylesheet" type="text/css" href="">
     <title>Soundboard</title>
 </head>
 
 <body class='<%= category %>'>
-    <%- include('partials/navbar.ejs') %>
-        <div style="position:relative; left:15vw; width:85vw;">
-            <p class="small">
-                <%= category.toUpperCase() %>
-            </p>
-            <div class="grid"></div>
-            <p class="small">Copyright © 2022 IdotDev — All rights reserved</p>
-        </div>
-        <div class="download-menu">Save: </div>
+    <nav>
+        <ul>
+            <% categories.forEach(c=> { %>
+                <li><a href="/<%= c %>">
+                        <button class="<%= c %>">
+                            <%= c.toUpperCase() %>
+                        </button>
+                    </a></li>
+                <% }); %>
+        </ul>
+    </nav>
+    <div id="nav-mini">
+        <button class="spam on">SPAM</button>
+        <button class="hamburger" aria-label="Menu">
+            <img src="/images/hamburger.svg">
+        </button>
+    </div>
+    <main>
+        <p class="small">
+            <%= category.toUpperCase() %>
+        </p>
+        <div id="grid"></div>
+        <p class="small">Copyright © 2022 IdotDev — All rights reserved</p>
+    </main>
+    <div id="context-menu">
+        <div class="menu-option" id="menu-save">Save: </div>
+        <div class="menu-option" id="menu-copy">Copy Link</div>
+        <div class="menu-option" id="menu-open">Open Link in New Tab</div>
+    </div>
 
-        <script async defer>
-            document.addEventListener('DOMContentLoaded', function () {
-                const __category = '<%= category %>';
-
-                document.getElementById('category').setAttribute('href', `/styles/${__category}.css`);
-
-                fetch(`http://localhost:3000/api?category=${__category}`)
-                    .then(res => res.json())
-                    .then(sounds => {
-                        const em = parseFloat(window.getComputedStyle(document.body).fontSize);
-                        const grid = document.querySelector('.grid');
-                        const downloadMenu = document.querySelector('.download-menu');
-
-                        sounds[__category].forEach(s => {
-                            const button = document.createElement('button');
-                            button.classList.add('sound-button');
-                            button.appendChild(document.createTextNode(s.name));
-
-                            button.addEventListener('contextmenu', function (e) {
-                                e.preventDefault();
-                                downloadMenu.removeChild(downloadMenu.firstChild);
-                                downloadMenu.appendChild(document.createTextNode('Save: ' + s.file.substring(0, 32) + '...'));
-                                downloadMenu.style.left = `${e.clientX}px`;
-                                downloadMenu.style.top = `${e.clientY}px`;
-                                downloadMenu.style.display = 'block';
-
-                                downloadMenu.addEventListener('click', function (e) {
-                                    e.stopPropagation();
-                                    const a = document.createElement('a');
-                                    a.href = `..\\${s.path}\\${s.file}`;
-                                    a.download = s.file;
-                                    a.click();
-                                    downloadMenu.style.removeProperty('display');
-                                });
-                            });
-
-                            const spam = true;
-                            const audio = new Audio(`${s.path}\\${s.file}`);
-                            button.addEventListener('click', function (e) {
-                                if (spam) {
-                                    new Audio(`${s.path}\\${s.file}`).play();
-                                    return;
-                                }
-                                if (audio.paused) {
-                                    audio.play();
-                                } else {
-                                    audio.pause();
-                                    audio.currentTime = 0;
-                                }
-                            });
-                            grid.appendChild(button);
-                        });
-
-                        const observer = new ResizeObserver(entries => {
-                            const buttonWidth = entries[0].contentRect.width;
-                            if (document.body.clientWidth < 40*em) {
-                                grid.style.gridTemplateColumns = 'repeat(1, 1fr)';
-                                return;
-                            }
-                            if (grid.width / grid.style.gridTemplateColumns < buttonWidth) {
-                                grid.style.gridTemplateColumns = `repeat(${buttonWidth}, 1fr)`;
-                            }
-
-                        })
-                        observer.observe(grid);
-
-                        document.addEventListener('mousedown', (e) => {
-                            if (e.target !== downloadMenu) {
-                                downloadMenu.style.removeProperty('display');
-                            }
-                        });
-                    })
-                    .catch(err => console.error('Error fetching sounds:', err));
+    <script defer>
+        const category = '<%= category %>';
+        const spam = true;
+        const em = parseFloat(window.getComputedStyle(document.body).fontSize);
+    </script>
+    <script async defer src="/scripts/sounds.js"></script>
+    <script async defer>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nav = document.querySelector('nav');
+            const hamburger = document.querySelector('.hamburger');
+            const contextMenu = document.querySelector('#context-menu');
+            hamburger.addEventListener('click', () => {
+                nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
             });
-        </script>
+            const observer = new ResizeObserver(entries => {
+                nav.style.display = entries[0].contentRect.width < 40 * em ? 'none' : 'block';
+            });
+            observer.observe(document.body);
+        });
+    </script>
 </body>
 
 </html>
